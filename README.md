@@ -12,8 +12,7 @@ The system allows users to:
 
 All student information is stored permanently inside a text file using file handling, making the data secure and reusable even after closing the program.
 
----
-
+ 
 ## 🚀 Features
 
 ✅ Add New Student  
@@ -23,15 +22,14 @@ All student information is stored permanently inside a text file using file hand
 ✅ Permanent Data Storage using File Handling  
 ✅ Simple and Interactive Menu System  
 
----
-
+ 
 ## 💻 Technologies Used
 
 🔹 C++ Programming Language  
 🔹 File Handling (`fstream`)  
 🔹 Object Oriented Programming (OOP) Concepts  
 
----
+ 
 
 ## 📂 File Used
 
@@ -42,7 +40,7 @@ All student information is stored permanently inside a text file using file hand
 101|Parth|19|CSE  
 102|Raj|20|IT  
 
----
+ 
 
 ## 🧠 Concepts Used
 
@@ -53,8 +51,7 @@ All student information is stored permanently inside a text file using file hand
 📌 Conditional Statements  
 📌 String Handling  
 
----
-
+ 
 ## ▶️ How to Run the Program
 
 ### Step 1: Compile the Program
@@ -65,7 +62,7 @@ g++ student.cpp -o student
 
 ./student
 
----
+ 
 
 ## 📋 Menu Options
 
@@ -75,8 +72,7 @@ g++ student.cpp -o student
 4️⃣ Delete Student  
 5️⃣ Exit  
 
----
-
+ 
 ## 🌟 Advantages
 
 ✨ Easy to Understand  
@@ -85,8 +81,7 @@ g++ student.cpp -o student
 ✨ Stores Student Records Permanently  
 ✨ Simple and Efficient System  
 
----
-
+ 
 ## 🏁 Conclusion
 
 The Student Management System is a simple yet effective mini project developed using C++. It demonstrates the practical implementation of object-oriented programming and file handling concepts for managing student records efficiently.
