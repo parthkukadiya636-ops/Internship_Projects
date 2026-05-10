@@ -1,11 +1,10 @@
- STUDENT MANAGEMENT SYSTEM
+ **STUDENT MANAGEMENT SYSTEM**
 
 Project Description
 
 The Student Management System is a simple console-based application developed in C++ using file handling. This project helps in managing student records efficiently through menu-driven operations. The system allows users to add, display, search, and delete student records easily. All student data is stored permanently in a text file.
 
- 
-Features
+**FEATURES**
 
 • Add New Student  
 • Display Student Records  
@@ -14,25 +13,22 @@ Features
 • Permanent Data Storage using File Handling  
 • Simple and User-Friendly Menu System  
 
- 
-Technologies Used
+**TECHNOLOGIES USED**
 
 • C++  
 • File Handling (fstream)  
 • Object Oriented Programming (OOP)  
 
- 
-File Used
+**FILE USED**
 
 student.txt
 
 Example Data Stored in File:
 
-101|Parth|19|CSE
-102|Raj|20|IT
+101|Parth|19|CSE  
+102|Raj|20|IT  
 
- 
-Concepts Used
+**CONCEPTS USED**
 
 • Classes and Objects  
 • Functions  
@@ -41,8 +37,7 @@ Concepts Used
 • Conditional Statements  
 • String Handling  
 
- 
-How to Run the Program
+**HOW TO RUN THE PROGRAM**
 
 Step 1: Compile the Program
 
@@ -52,9 +47,7 @@ Step 2: Run the Program
 
 ./student
 
- 
-
-Menu Options
+**MENU OPTIONS**
 
 1. Add Student  
 2. Display Students  
@@ -62,8 +55,7 @@ Menu Options
 4. Delete Student  
 5. Exit  
 
- 
-Advantages
+**ADVANTAGES**
 
 • Easy to Understand  
 • Beginner Friendly Project  
@@ -71,7 +63,6 @@ Advantages
 • Stores Student Records Permanently  
 • Simple and Efficient System  
 
- 
-Conclusion
+**CONCLUSION**
 
 The Student Management System is a simple and effective mini project developed using C++. It demonstrates the use of object-oriented programming and file handling for managing student records efficiently. This project is suitable for beginners to understand the basic concepts of C++ and data management.
