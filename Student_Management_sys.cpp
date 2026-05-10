@@ -15,7 +15,7 @@ public:
     void addStudent(){
         ofstream file("student.txt", ios::app);
 
-        cout<<"\nEnter the roll number";
+        cout<<"\nEnter the roll number:";
         cin >> rollNo;
 
         cin.ignore();
@@ -49,6 +49,74 @@ public:
 
         file.close();
 }
+     void searchStudent(){
+        ifstream file("student.txt");
+
+        int searchRoll;
+        string data;
+
+        bool found = false;
+
+        cout<<"\nEnter the roll no to find the student:";
+        cin>>searchRoll;
+
+        while(getline(file,data)){
+            int pos = data.find("|");
+            int roll = stoi(data.substr(0,pos));
+
+            if(roll == searchRoll){
+                cout << "\nStudent Found:\n";
+                cout<<data<<endl;
+                found = true;
+            }
+        }
+        if (!found)
+        {
+            cout << "\nStudent Not Found!\n";
+        }
+         file.close();
+     }
+
+    void deleteStudent(){
+
+        ifstream file("student.txt");
+        ofstream temp("temp.txt",ios::app);
+
+        int deleteRoll;
+        string data;
+
+        bool found = false;
+
+        cout<<"\nEnter the Roll Number to Delete:";
+        cin>> deleteRoll;
+
+        while(getline(file,data)){
+            int pos = data.find("|");
+            int roll = stoi(data.substr(0,pos));
+
+            if(deleteRoll != roll){
+                temp<<data<<endl;
+            }
+            else{
+                found =true;
+            }
+        }
+
+        file.close();
+        temp.close();
+
+        remove("student.txt");
+        rename("temp.txt", "student.txt");
+
+        if(found== true){
+             cout << "\nStudent Record Deleted Successfully!\n"; 
+            } 
+        else { 
+            cout << "\nStudent Not Found!\n";
+         }
+
+    }
+
 };
 
 
@@ -78,20 +146,20 @@ int main(){
             s.displayStudents();
             break;
 
-        // case 3:
-        //     s.searchStudent();
-        //     break;
+        case 3:
+            s.searchStudent();
+            break;
 
-        // case 4:
-        //     s.deleteStudent();
-        //     break;
+        case 4:
+            s.deleteStudent();
+            break;
 
-        // case 5:
-        //     cout << "\nExiting Program...\n";
-        //     break;
+        case 5:
+            cout << "\nExiting Program...\n";
+            break;
 
-        // default:
-        //     cout << "\nInvalid Choice!\n";
+        default:
+            cout << "\nInvalid Choice!\n";
         }
 
     } while (choice != 5);
