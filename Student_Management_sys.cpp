@@ -156,6 +156,7 @@ int main(){
 
         case 5:
             cout << "\nExiting Program...\n";
+            cout<<"\n...Thanks for Visiting...\n";
             break;
 
         default:
