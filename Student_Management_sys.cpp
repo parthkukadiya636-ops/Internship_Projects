@@ -23,6 +23,8 @@ public:
         cout << "Enter Name: ";
         getline(cin, name);
 
+        cin.ignore();
+
         cout << "Enter Age: ";
         cin >> age;
 
