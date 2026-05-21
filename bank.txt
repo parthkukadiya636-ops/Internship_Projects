@@ -1,6 +1,5 @@
-1|Parth|25
-2|Harsh|23
-1|Parth|25
+1|Parth|50
+2|Harsh|123
 3|Ram|25
 4|Krishna|25
 5|Hanuman|100

@@ -7,10 +7,12 @@ class BankAccount{
     public:
          int accountno;
          string name;
-         float balance;
+         float balance; 
+
+        // function to create the account.
 
         void createAccount(){
-            
+
             cout<<"\nEnter Account number: ";
             cin>> accountno;
 
@@ -32,8 +34,6 @@ class BankAccount{
             }
             file.close();
 
-             
-
             if(found){
                 cout<<"\nAccount already exists!\n";
             }
@@ -43,7 +43,7 @@ class BankAccount{
                 cout<<"Enter the name of the Account holder: ";
                 getline(cin,name);
 
-                 cout<<"Enter the initial balance: ";
+                cout<<"Enter the initial balance: ";
                 cin>> balance;
 
                 cin.ignore();
@@ -55,8 +55,64 @@ class BankAccount{
                 cout<<"\nAccount created successfully!!\n";
             }
          }
-};
+         // function to deposit the money.
+         
+            void depositMoney(){
 
+            ifstream file("Bank.txt");
+            ofstream temp("temp.txt",ios::app);
+            string data;
+            int amount;
+
+            cout<<"Enter the Account No to deposit Money: ";
+            cin>>accountno;
+
+            cout<<"Enter the amount to be deposited: ";
+            cin>> amount;
+                    
+            bool found = false;
+
+
+            while(getline(file,data)){
+
+                int pos1= data.find("|");
+                string acc_no = data.substr(0,pos1);
+
+                data.erase(0, pos1 + 1);
+                int pos2 = data.find("|");
+
+                string name = data.substr(0, pos2);
+
+                data.erase(0, pos2 + 1);
+
+                string balance = data;
+
+                float bal = stof(balance);
+
+                if(stoi(acc_no) == accountno){
+
+                    bal += amount;
+                    found = true;
+
+                    cout<<"\nMoney credited Successfully!!\n";
+                }
+
+                temp << acc_no << "|"
+                 << name << "|"
+                 << bal << endl;
+                }
+
+                file.close();
+                temp.close();
+
+                remove("bank.txt");
+                rename("temp.txt","bank.txt");
+
+                if(!found){
+                    cout<<"\nAccount not found! Please enter correct account number or create a new account.\n";
+                }
+         }
+};
 int main(){
 
     BankAccount acc;
@@ -78,9 +134,9 @@ int main(){
             acc.createAccount();
             break;
 
-            // case 2:
-            // acc.depositMoney();
-            // break;
+            case 2:
+            acc.depositMoney();
+            break;
 
             // case 3:
             // acc.WithdrawMoney();
