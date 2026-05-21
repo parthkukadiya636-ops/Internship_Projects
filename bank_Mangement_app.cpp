@@ -112,6 +112,121 @@ class BankAccount{
                     cout<<"\nAccount not found! Please enter correct account number or create a new account.\n";
                 }
          }
+
+         void WithdrawMoney(){
+
+            ifstream file("Bank.txt");
+            ofstream temp("temp.txt",ios::app);
+            string data;
+            int amount;
+
+            cout<<"Enter the Account No to  withdrawn Money: ";
+            cin>>accountno;
+
+            cout<<"Enter the amount to be withdrawn: ";
+            cin>> amount;
+                    
+            bool found = false;
+
+
+            while(getline(file,data)){
+
+                int pos1= data.find("|");
+                string acc_no = data.substr(0,pos1);
+
+                data.erase(0, pos1 + 1);
+                int pos2 = data.find("|");
+
+                string name = data.substr(0, pos2);
+
+                data.erase(0, pos2 + 1);
+
+                string balance = data;
+
+                float bal = stof(balance);
+
+                if(stoi(acc_no) == accountno){
+
+                    if((bal - amount)>=0){
+                         
+                        cout<<"\nMoney debited Successfully!! "<<(amount)<<" Rupees.\n";
+                        bal -= amount;
+                    }
+                    else{
+                        cout<<"\nInsufficient balance!!\n";
+                    }
+                    found = true;
+                }
+
+                temp << acc_no << "|"
+                 << name << "|"
+                 << bal << endl;
+                }
+
+                file.close();
+                temp.close();
+
+                remove("bank.txt");
+                rename("temp.txt","bank.txt");
+
+                if(!found){
+                    cout<<"\nAccount not found! Please enter correct account number or create a new account.\n";
+                }
+
+
+         }
+
+         void checkBalance(){
+            ifstream file("Bank.txt");
+            ofstream temp("temp.txt",ios::app);
+            string data;
+            int amount;
+
+            cout<<"Enter the Account No to Check Balance: ";
+            cin>>accountno;
+
+                    
+            bool found = false;
+
+
+            while(getline(file,data)){
+
+                int pos1= data.find("|");
+                string acc_no = data.substr(0,pos1);
+
+                data.erase(0, pos1 + 1);
+                int pos2 = data.find("|");
+
+                string name = data.substr(0, pos2);
+
+                data.erase(0, pos2 + 1);
+
+                string balance = data;
+
+                float bal = stof(balance);
+
+                if(stoi(acc_no) == accountno){
+
+                    cout<< "\n Available Balance is "<<bal<<" Rupees.\n";
+                    found = true;
+                }
+
+                temp << acc_no << "|"
+                 << name << "|"
+                 << bal << endl;
+                }
+
+                file.close();
+                temp.close();
+
+                remove("bank.txt");
+                rename("temp.txt","bank.txt");
+
+                if(!found){
+                    cout<<"\nAccount not found! Please enter correct account number or create a new account.\n";
+                }
+
+         }
 };
 int main(){
 
@@ -138,13 +253,13 @@ int main(){
             acc.depositMoney();
             break;
 
-            // case 3:
-            // acc.WithdrawMoney();
-            // break;
+            case 3:
+            acc.WithdrawMoney();
+            break;
 
-            // case 4:
-            // acc.checkBalance();
-            // break;
+            case 4:
+            acc.checkBalance();
+            break;
 
             case 5:
             cout<<"\nThank You!!\n\n";
