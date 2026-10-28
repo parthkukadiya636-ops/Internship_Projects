@@ -1,0 +1,444 @@
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+// Book class
+class Book
+{
+public:
+    int id;
+    string title, author;
+    bool issued;
+
+    Book()
+    {
+        id = 0;
+        title = "";
+        author = "";
+        issued = false;
+    }
+
+    void display()
+    {
+        cout << "\nBook ID: " << id;
+        cout << "\nTitle: " << title;
+        cout << "\nAuthor: " << author;
+        cout << "\nStatus: "
+             << (issued ? "Issued" : "Available");
+        cout << "\n-------------------------\n";
+    }
+};
+
+Book books[100];
+int count = 0;
+
+// Load books from file
+void loadBooks()
+{
+    count = 0;
+
+    ifstream file("books.txt");
+
+    while (count < 100 && file >> books[count].id)
+    {
+        file.ignore();
+
+        if (!getline(file, books[count].title))
+            break;
+
+        if (!getline(file, books[count].author))
+            break;
+
+        if (!(file >> books[count].issued))
+            break;
+
+        file.ignore();
+        count++;
+    }
+
+    file.close();
+}
+
+// Save books to file
+void saveBooks()
+{
+    ofstream file("books.txt");
+
+    if (!file)
+    {
+        cout << "Error saving file!\n";
+        return;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        file << books[i].id << endl;
+        file << books[i].title << endl;
+        file << books[i].author << endl;
+        file << books[i].issued << endl;
+    }
+
+    file.close();
+}
+
+// Base class
+class LibrarySystem
+{
+public:
+    virtual void execute() = 0;
+
+    virtual ~LibrarySystem() {}
+};
+
+// Add Book
+class AddBook : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        if (count >= 100)
+        {
+            cout << "Library is full!\n";
+            return;
+        }
+
+        int id;
+        string title, author;
+
+        cout << "Enter Book ID: ";
+        cin >> id;
+
+        if (id <= 0)
+        {
+            cout << "Invalid ID!\n";
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].id == id)
+            {
+                cout << "Book ID already exists!\n";
+                return;
+            }
+        }
+
+        cin.ignore();
+
+        cout << "Enter Book Title: ";
+        getline(cin, title);
+
+        cout << "Enter Author Name: ";
+        getline(cin, author);
+
+        if (title.empty() || author.empty())
+        {
+            cout << "Title and author cannot be empty!\n";
+            return;
+        }
+
+        books[count].id = id;
+        books[count].title = title;
+        books[count].author = author;
+        books[count].issued = false;
+
+        count++;
+        saveBooks();
+
+        cout << "Book added successfully!\n";
+    }
+};
+
+// Display Books
+class DisplayBooks : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        if (count == 0)
+        {
+            cout << "No books available!\n";
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+            books[i].display();
+    }
+};
+
+// Search Book
+class SearchBook : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        int id;
+        cout << "Enter Book ID: ";
+        cin >> id;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].id == id)
+            {
+                cout << "Book Found!\n";
+                books[i].display();
+                return;
+            }
+        }
+
+        cout << "Book not found!\n";
+    }
+};
+
+// Issue Book
+class IssueBook : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        int id;
+        cout << "Enter Book ID to issue: ";
+        cin >> id;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].id == id)
+            {
+                if (books[i].issued)
+                {
+                    cout << "Book is already issued!\n";
+                }
+                else
+                {
+                    books[i].issued = true;
+                    saveBooks();
+
+                    cout << "Book issued successfully!\n";
+                }
+
+                return;
+            }
+        }
+
+        cout << "Book not found!\n";
+    }
+};
+
+// Return Book
+class ReturnBook : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        int id;
+        cout << "Enter Book ID to return: ";
+        cin >> id;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].id == id)
+            {
+                if (!books[i].issued)
+                {
+                    cout << "Book is already available!\n";
+                }
+                else
+                {
+                    books[i].issued = false;
+                    saveBooks();
+
+                    cout << "Book returned successfully!\n";
+                }
+
+                return;
+            }
+        }
+
+        cout << "Book not found!\n";
+    }
+};
+
+// Delete Book
+class DeleteBook : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        int id;
+        cout << "Enter Book ID to delete: ";
+        cin >> id;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].id == id)
+            {
+                if (books[i].issued)
+                {
+                    cout << "Return the book before deleting it!\n";
+                    return;
+                }
+
+                for (int j = i; j < count - 1; j++)
+                    books[j] = books[j + 1];
+
+                count--;
+                saveBooks();
+
+                cout << "Book deleted successfully!\n";
+                return;
+            }
+        }
+
+        cout << "Book not found!\n";
+    }
+};
+
+// Display Available Books
+class AvailableBooks : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        bool found = false;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (!books[i].issued)
+            {
+                books[i].display();
+                found = true;
+            }
+        }
+
+        if (!found)
+            cout << "No available books!\n";
+    }
+};
+
+// Display Issued Books
+class IssuedBooks : public LibrarySystem
+{
+public:
+    void execute() override
+    {
+        loadBooks();
+
+        bool found = false;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (books[i].issued)
+            {
+                books[i].display();
+                found = true;
+            }
+        }
+
+        if (!found)
+            cout << "No issued books!\n";
+    }
+};
+
+// Main function
+int main()
+{
+    AddBook add;
+    DisplayBooks display;
+    SearchBook search;
+    IssueBook issue;
+    ReturnBook ret;
+    DeleteBook del;
+    AvailableBooks available;
+    IssuedBooks issued;
+
+    LibrarySystem *ptr;
+
+    int choice;
+
+    do
+    {
+        cout << "\n===== LIBRARY MANAGEMENT SYSTEM =====\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display All Books\n";
+        cout << "3. Search Book by ID\n";
+        cout << "4. Issue Book\n";
+        cout << "5. Return Book\n";
+        cout << "6. Delete Book\n";
+        cout << "7. Display Available Books\n";
+        cout << "8. Display Issued Books\n";
+        cout << "9. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        switch (choice)
+        {
+        case 1:
+            ptr = &add;
+            ptr->execute();
+            break;
+
+        case 2:
+            ptr = &display;
+            ptr->execute();
+            break;
+
+        case 3:
+            ptr = &search;
+            ptr->execute();
+            break;
+
+        case 4:
+            ptr = &issue;
+            ptr->execute();
+            break;
+
+        case 5:
+            ptr = &ret;
+            ptr->execute();
+            break;
+
+        case 6:
+            ptr = &del;
+            ptr->execute();
+            break;
+
+        case 7:
+            ptr = &available;
+            ptr->execute();
+            break;
+
+        case 8:
+            ptr = &issued;
+            ptr->execute();
+            break;
+
+        case 9:
+            cout << "Thank you for using the system!\n";
+            break;
+
+        default:
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 9);
+
+    return 0;
+}
